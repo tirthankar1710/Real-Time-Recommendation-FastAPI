@@ -1,0 +1,4 @@
+pandas
+scikit-surprise 1.1.4
+fastapi
+uvicorn
