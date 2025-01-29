@@ -14,7 +14,7 @@ def read_root():
     return {"Status": "Running!"}
 
 @app.get("/test_function")
-def read_root():
+def read_root_2():
     return {"Status": "Test Function Running!"}
 
 
