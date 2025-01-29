@@ -17,7 +17,7 @@ def read_root():
 def read_root_2():
     return {"Status": "Test Function Running!"}
 
-
+# adding comment
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8080)
