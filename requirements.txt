@@ -3,3 +3,7 @@ pandas
 scikit-surprise
 fastapi
 uvicorn
+pyyaml
+python-box
+boto3
+python-dotenv

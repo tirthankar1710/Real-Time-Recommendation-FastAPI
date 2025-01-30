@@ -1,0 +1,15 @@
+artifacts_root: opt/ml/processing/artifacts
+
+model_trainer:
+  root_dir: opt/ml/processing/artifacts/model_trainer
+  input_data: opt/ml/processing/artifacts/model_trainer/merged_data_weight.csv
+  model_path: opt/ml/processing/artifacts/model_trainer/colab_filter_model.pkl
+  cosine_sim: cosine_scores.npy
+  indices_name: indices.pkl
+  content_df_path: opt/ml/processing/artifacts/model_trainer/content_df.csv
+
+prediction:
+  colab_model_path: opt/ml/processing/artifacts/model_trainer/colab_filter_model.pkl
+  cosine_sim_path: opt/ml/processing/artifacts/model_trainer/cosine_scores.npy
+  indices_path: opt/ml/processing/artifacts/model_trainer/indices.pkl
+  content_df_path: opt/ml/processing/artifacts/model_trainer/content_df.csv
