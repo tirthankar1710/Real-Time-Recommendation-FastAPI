@@ -10,11 +10,11 @@ prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
 app = FastAPI()
 
 
-@app.on_event("startup")
-def startup_load_model():
-    config_path = Path("src/config.yaml")
-    load_model(config_file_path=config_path)
-    return {"Status": "Test Function Running!"}
+# @app.on_event("startup")
+# def startup_load_model():
+#     config_path = Path("src/config.yaml")
+#     load_model(config_file_path=config_path)
+#     return {"Status": "Test Function Running!"}
 
 @app.get("/")
 def read_root():
