@@ -7,12 +7,15 @@ from src.prediction import load_model,PredictionPipeline
 
 app = FastAPI()
 
+prediction_pipeline = None
+
 @app.on_event("startup")
 def startup_load_model():
+    global prediction_pipeline
     config_path = Path("src/config.yaml")
     load_model(config_file_path=config_path)
     prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
-    return {"Status": "Test Function Running!"}
+    return {"Status": "Model Loaded and Prediction Pipeline Initialized"}
 
 @app.get("/")
 def read_root():
@@ -25,6 +28,8 @@ def reload_model():
 
 @app.get("/prediction")
 def get_prediction(user_id, parent_asin):
+    # prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
+    global prediction_pipeline
     recommendations = prediction_pipeline.get_hybrid_recommendations(
         user_id=user_id, 
         parent_asin=parent_asin
