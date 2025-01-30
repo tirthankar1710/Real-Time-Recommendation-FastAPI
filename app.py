@@ -5,15 +5,13 @@ from pathlib import Path
 from src.utils import read_yaml
 from src.prediction import load_model,PredictionPipeline
 
-prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
-
 app = FastAPI()
-
 
 @app.on_event("startup")
 def startup_load_model():
     config_path = Path("src/config.yaml")
     load_model(config_file_path=config_path)
+    prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
     return {"Status": "Test Function Running!"}
 
 @app.get("/")
