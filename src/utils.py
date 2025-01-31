@@ -10,13 +10,6 @@ from src.logging_util import logger
 
 load_dotenv()
 
-# # Initialize a session using credentials from environment variables
-# session = boto3.Session(
-#     aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
-#     aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY'),
-#     # aws_session_token=os.getenv('AWS_SESSION_TOKEN')
-# )
-
 def read_yaml(path_to_yaml: Path) -> ConfigBox:
     """reads yaml file and returns
 

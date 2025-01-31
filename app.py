@@ -23,8 +23,11 @@ def read_root():
 
 @app.post("/reload_model")
 def reload_model():
+    global prediction_pipeline
     config_path = Path("src/config.yaml")
     load_model(config_file_path=config_path)
+    prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
+    return {"Status": "Model Reload completed"}
 
 @app.get("/prediction")
 def get_prediction(user_id, parent_asin):
