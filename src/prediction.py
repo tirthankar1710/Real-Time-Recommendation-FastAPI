@@ -10,7 +10,7 @@ from src.utils import create_folder_from_config, download_s3_folder
 def load_model(config_file_path):
     # Creating the root directory
     folder_path = create_folder_from_config(config_file_path)
-    print(folder_path)
+    print("folder_path:", folder_path)
     download_s3_folder(
         bucket_name='ml-recommendation-capstone',
         s3_folder='$.JobId/model_trainer',
