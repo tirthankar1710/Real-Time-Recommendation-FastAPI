@@ -1,9 +1,6 @@
-from fastapi import FastAPI, BackgroundTasks
-
+from fastapi import FastAPI
 from pathlib import Path
-from datetime import datetime
 
-from src.utils import read_yaml, upload_json_to_s3
 from src.prediction import load_model,PredictionPipeline
 
 app = FastAPI()
@@ -14,7 +11,7 @@ prediction_pipeline = None
 def startup_load_model():
     global prediction_pipeline
     config_path = Path("src/config.yaml")
-    load_model(config_file_path=config_path)
+    load_model(config_file_path=config_path, job_id=None)
     prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
     return {"Status": "Model Loaded and Prediction Pipeline Initialized"}
 
