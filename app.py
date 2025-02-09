@@ -20,7 +20,7 @@ def read_root():
     return {"Status": "Running!"}
 
 @app.get("/reload_model")
-def reload_model(job_id = None):
+def reload_model(job_id):
     try:
         global prediction_pipeline
         config_path = Path("src/config.yaml")
