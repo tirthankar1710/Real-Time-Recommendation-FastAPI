@@ -5,6 +5,7 @@ from box.exceptions import BoxValueError
 import os
 import boto3
 from dotenv import load_dotenv
+import json
 
 from src.logging_util import logger
 
@@ -111,3 +112,19 @@ def download_s3_folder(bucket_name: str, s3_folder: str, local_dir: str):
 
                 s3.download_file(bucket_name, s3_key, local_file_path)
                 logger.info(f"Downloaded {s3_key} to {local_file_path}")
+
+def upload_json_to_s3(bucket_name: str, json_data: dict, s3_key: str):
+    """Uploads a JSON file to an S3 bucket
+
+    Args:
+        bucket_name (str): Name of the S3 bucket
+        json_data (dict): JSON data to upload
+        s3_key (str): S3 key (path) where the JSON file will be stored
+    """
+    s3 = boto3.client('s3')
+    try:
+        json_str = json.dumps(json_data)
+        s3.put_object(Bucket=bucket_name, Key=s3_key, Body=json_str, ContentType='application/json')
+        logger.info(f"Uploaded JSON to s3://{bucket_name}/{s3_key}")
+    except Exception as e:
+        logger.exception(f"Error uploading JSON to S3: {e}")

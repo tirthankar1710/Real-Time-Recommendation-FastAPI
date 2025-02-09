@@ -1,8 +1,9 @@
 from fastapi import FastAPI, BackgroundTasks
 
 from pathlib import Path
+from datetime import datetime
 
-from src.utils import read_yaml
+from src.utils import read_yaml, upload_json_to_s3
 from src.prediction import load_model,PredictionPipeline
 
 app = FastAPI()
@@ -22,16 +23,24 @@ def read_root():
     return {"Status": "Running!"}
 
 @app.post("/reload_model")
-def reload_model():
+def reload_model(job_id):
     global prediction_pipeline
     config_path = Path("src/config.yaml")
-    load_model(config_file_path=config_path)
+    load_model(config_file_path=config_path, job_id=job_id)
     prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
-    return {"Status": "Model Reload completed"}
+    # sample_json_data = {"sample": "sample_event_trigger_json"}
+    # now = str(datetime.now())
+    # upload_json_to_s3(
+    #     bucket_name="ml-recommendation-capstone",
+    #     json_data=sample_json_data,
+    #     s3_key=f"event_trigger/event_trigger_{now}.json"
+    # )
+    
+    return {"Status": "Model Reload Initiated..."}
 
 @app.get("/prediction")
 def get_prediction(user_id, parent_asin):
-    # prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
+    # prediction_pipeline = PredictionPipeline(config_path="src/config.yaml") # For Local
     global prediction_pipeline
     recommendations = prediction_pipeline.get_hybrid_recommendations(
         user_id=user_id, 
