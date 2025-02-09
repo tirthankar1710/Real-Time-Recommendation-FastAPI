@@ -34,15 +34,7 @@ def reload_model(job_id = None):
         return {
             "Error": e
         }
-    # sample_json_data = {"sample": "sample_event_trigger_json"}
-    # now = str(datetime.now())
-    # upload_json_to_s3(
-    #     bucket_name="ml-recommendation-capstone",
-    #     json_data=sample_json_data,
-    #     s3_key=f"event_trigger/event_trigger_{now}.json"
-    # )
-    
-    return {"Status": "Model Reload Initiated..."}
+    return {"Status": f"Model Reload Completed for job-id: {job_id}!"}
 
 @app.get("/prediction")
 def get_prediction(user_id, parent_asin):
