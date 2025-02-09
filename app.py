@@ -11,20 +11,20 @@ app = FastAPI()
 
 prediction_pipeline = None
 
-# @app.on_event("startup")
-# def startup_load_model():
-#     global prediction_pipeline
-#     config_path = Path("src/config.yaml")
-#     load_model(config_file_path=config_path)
-#     prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
-#     return {"Status": "Model Loaded and Prediction Pipeline Initialized"}
+@app.on_event("startup")
+def startup_load_model():
+    global prediction_pipeline
+    config_path = Path("src/config.yaml")
+    load_model(config_file_path=config_path)
+    prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
+    return {"Status": "Model Loaded and Prediction Pipeline Initialized"}
 
 @app.get("/")
 def read_root():
     return {"Status": "Running!"}
 
 @app.get("/reload_model")
-def reload_model(job_id: Optional[str] = None):
+def reload_model(job_id = None):
     try:
         global prediction_pipeline
         config_path = Path("src/config.yaml")

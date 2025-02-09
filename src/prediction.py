@@ -7,15 +7,21 @@ from surprise import dump
 from src.utils import read_yaml
 from src.utils import create_folder_from_config, download_s3_folder
 
-def load_model(config_file_path, job_id="dynamic-job-id-2001"):
+def load_model(config_file_path, job_id):
     # Creating the root directory
     folder_path = create_folder_from_config(config_file_path)
-    print("folder_path:", folder_path)
-    download_s3_folder(
-        bucket_name='ml-recommendation-capstone',
-        s3_folder=f'{job_id}/model_trainer',
-        local_dir=folder_path
-        )
+    if job_id == None:
+        download_s3_folder(
+            bucket_name='ml-recommendation-capstone',
+            s3_folder=f'dynamic-job-id-2001/model_trainer',
+            local_dir=folder_path
+            )
+    else:
+        download_s3_folder(
+            bucket_name='ml-recommendation-capstone',
+            s3_folder=f'{job_id}/model_trainer',
+            local_dir=folder_path
+            )
 
 class PredictionPipeline:
     def __init__(self, config_path):
