@@ -2,7 +2,6 @@ from fastapi import FastAPI, BackgroundTasks
 
 from pathlib import Path
 from datetime import datetime
-from typing import Optional
 
 from src.utils import read_yaml, upload_json_to_s3
 from src.prediction import load_model,PredictionPipeline
