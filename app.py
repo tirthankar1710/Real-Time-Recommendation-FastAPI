@@ -1,45 +1,56 @@
-from fastapi import FastAPI, BackgroundTasks
+from fastapi import FastAPI
+from pydantic import BaseModel
+from collectFeedback import getRatings, getMetrics
+import collectFeedback
+import uvicorn
+from typing import List, Union
 
-from pathlib import Path
 
-from src.utils import read_yaml
-from src.prediction import load_model,PredictionPipeline
+# class User_Input(BaseModel):
+#     user: str
+
+class Item(BaseModel):
+    user_id: str
+    product_id: str
+    feedback: str
+class Item_List(BaseModel):
+    i: Item
+
+class User_Input(BaseModel):
+    integers: List[Union[int]]
+
 
 app = FastAPI()
 
-prediction_pipeline = None
 
-@app.on_event("startup")
-def startup_load_model():
-    global prediction_pipeline
-    config_path = Path("src/config.yaml")
-    load_model(config_file_path=config_path)
-    prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
-    return {"Status": "Model Loaded and Prediction Pipeline Initialized"}
+@app.post("/collectFeedback")
+def send(inp: List[Item]):
+    user_feedback = []
+    for i in inp:
+        d = {"user_id": i.user_id, "product_id": i.product_id, "feedback": i.feedback}
+        user_feedback.append(d)
+    print(user_feedback)
+    result = collectFeedback.getRatings(user_feedback)
+    return result
 
-@app.get("/")
-def read_root():
-    return {"Status": "Running!"}
-
-@app.post("/reload_model")
-def reload_model():
-    global prediction_pipeline
-    config_path = Path("src/config.yaml")
-    load_model(config_file_path=config_path)
-    prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
-    return {"Status": "Model Reload completed"}
-
-@app.get("/prediction")
-def get_prediction(user_id, parent_asin):
-    # prediction_pipeline = PredictionPipeline(config_path="src/config.yaml")
-    global prediction_pipeline
-    recommendations = prediction_pipeline.get_hybrid_recommendations(
-        user_id=user_id, 
-        parent_asin=parent_asin
-        )
-    return recommendations
-
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+@app.post("/collectMetrics")
+def send(inp: User_Input):
+    print(inp)
+    l = [i for i in inp.integers]
+    print(l)
+    metric = []
+    d = {'Mean Reciprocal Rank':(l[0]/100)}
+    metric.append(d)
+    print(metric)
+    d = {'Coversion':l[1]}
+    metric.append(d)
+    count=0
+    for x in l[2:]:
+        count+=1
+        d = {'Product'+str(count):x}
+        metric.append(d)
+    result = collectFeedback.getMetrics(metric)
+    return result
+# uvicorn app:app --reload 
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="127.0.0.1", port=8000)
