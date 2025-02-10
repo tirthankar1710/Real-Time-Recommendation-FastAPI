@@ -7,3 +7,6 @@ pyyaml
 python-box
 boto3
 python-dotenv
+transformers
+bert-score
+typing
