@@ -13,7 +13,7 @@ def load_model(config_file_path, job_id):
     if job_id == None:
         download_s3_folder(
             bucket_name='ml-recommendation-capstone',
-            s3_folder=f'dynamic-job-id-2001/model_trainer',
+            s3_folder=f'baseline-recommendation-artifacts/model_trainer',
             local_dir=folder_path
             )
     else:
